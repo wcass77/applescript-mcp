@@ -1,94 +1,161 @@
 # applescript-mcp MCP Server
 
-A Model Context Protocol server
+A Model Context Protocol server that enables LLM applications to interact with macOS through AppleScript.
+This server provides a standardized interface for AI applications to control system functions, manage files, handle notifications, and more.
 
-This is a TypeScript-based MCP server that implements interaction with macOS via AppleScript.
+## Features
 
-## Categories
+- 🗓️ Calendar management (events, reminders)
+- 📋 Clipboard operations
+- 🔍 Finder integration
+- 🔔 System notifications
+- ⚙️ System controls (volume, dark mode, apps)
+- 📟 iTerm terminal integration
+
+## Prerequisites
+
+- macOS 10.15 or later
+- Node.js 18 or later
+
+## Available Categories
 
 ### Calendar
-- `add` - Create a new calendar event
-  - Takes title, start time, and end time as required parameters
-  - Adds event to the Calendar app
-- `list` - List all calendar events for the current day
-  - Returns a structured list of all events in the Calendar app
+| Command | Description | Parameters |
+|---------|-------------|------------|
+| `add` | Create calendar event | `title`, `startDate`, `endDate` |
+| `list` | List today's events | None |
 
 ### Clipboard
-- `set_clipboard` - Copy text to the clipboard
-  - Takes text as a required parameter
-  - Copies text to the clipboard
-- `get_clipboard` - Retrieve text from the clipboard
-  - Returns the current contents of the clipboard
-- `clear_clipboard` - Clear the clipboard
-  - Clears the contents of the clipboard
+| Command | Description | Parameters |
+|---------|-------------|------------|
+| `set_clipboard` | Copy to clipboard | `content` |
+| `get_clipboard` | Get clipboard contents | None |
+| `clear_clipboard` | Clear clipboard | None |
 
 ### Finder
-- `get_selected_files` - Retrieve the selected files in the Finder
-  - Returns a structured list of selected files
-- `search_files` - Search for files in the Finder
-  - Takes a search query as a required parameter
-  - Returns a structured list of search results
-- `quick_look` - Open a Quick Look preview of a file
-  - Takes a file path as a required parameter
-  - Opens a Quick Look preview of the file
+| Command | Description | Parameters |
+|---------|-------------|------------|
+| `get_selected_files` | Get selected files | None |
+| `search_files` | Search for files | `query`, `location` (optional) |
+| `quick_look` | Preview file | `path` |
 
 ### Notifications
-- `send_notification` - Display a notification
-  - Takes a title and message as required parameters
-  - Displays a notification with the given title and message
-- `toggle_do_not_disturb` - Toggle Do Not Disturb mode
-  - Toggles the Do Not Disturb mode on or off
+| Command | Description | Parameters |
+|---------|-------------|------------|
+| `send_notification` | Show notification | `title`, `message`, `sound` (optional) |
+| `toggle_do_not_disturb` | Toggle DND mode | None |
 
 ### System
-- `volume` - Set the system volume
-- `get_frontmost_app`- Get the frontmost application
-- `launch_app` - Open an application
-- `quit_app` - Quit an application
-- `toggle_dark_mode` - Toggle Dark Mode
+| Command | Description | Parameters |
+|---------|-------------|------------|
+| `volume` | Set system volume | `level` (0-100) |
+| `get_frontmost_app` | Get active app | None |
+| `launch_app` | Open application | `name` |
+| `quit_app` | Close application | `name`, `force` (optional) |
+| `toggle_dark_mode` | Toggle dark mode | None |
 
 ### iTerm
-- `paste_clipboard` - Paste clipboard content into iTerm
-- `run` - Run a command in iTerm
+| Command | Description | Parameters |
+|---------|-------------|------------|
+| `paste_clipboard` | Paste to iTerm | None |
+| `run` | Execute command | `command`, `newWindow` (optional) |
 
 ## Development
 
-Install dependencies:
+### Setup
 ```bash
+# Install dependencies
 npm install
-```
 
-Build the server:
-```bash
+# Build the server
 npm run build
+
+# Launch MCP Inspector
+# See: https://modelcontextprotocol.io/docs/tools/inspector
+npx @modelcontextprotocol/inspector node path/to/server/index.js args...
 ```
 
-For development with auto-rebuild:
-```bash
-npm run watch
+### Adding New Functionality
+
+#### 1. Create Category File
+Create `src/categories/newcategory.ts`:
+```typescript
+import { ScriptCategory } from "../types/index.js";
+
+export const newCategory: ScriptCategory = {
+  name: "category_name",
+  description: "Category description",
+  scripts: [
+    // Scripts will go here
+  ]
+};
 ```
 
-## Installation
-
-To use with Claude Desktop, add the server config:
-
-On MacOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-
-```json
+#### 2. Add Scripts
+```typescript
 {
-  "mcpServers": {
-    "applescript-mcp": {
-      "command": "/path/to/applescript-mcp/dist/index.js"
-    }
-  }
+  name: "script_name",
+  description: "What the script does",
+  schema: {
+    type: "object",
+    properties: {
+      paramName: {
+        type: "string",
+        description: "Parameter description"
+      }
+    },
+    required: ["paramName"]
+  },
+  script: (args) => `
+    tell application "App"
+      // AppleScript code using ${args.paramName}
+    end tell
+  `
 }
 ```
 
-### Debugging
+#### 3. Register Category
+Update `src/index.ts`:
+```typescript
+import { newCategory } from "./categories/newcategory.js";
+// ...
+server.addCategory(newCategory);
+```
 
-Since MCP servers communicate over stdio, debugging can be challenging. We recommend using the [MCP Inspector](https://github.com/modelcontextprotocol/inspector), which is available as a package script:
+## Debugging
+
+### Using MCP Inspector
+The MCP Inspector provides a web interface for testing and debugging your server:
 
 ```bash
 npm run inspector
 ```
 
-The Inspector will provide a URL to access debugging tools in your browser.
+### Logging
+Enable debug logging by setting the environment variable:
+```bash
+DEBUG=applescript-mcp* npm start
+```
+
+### Common Issues
+- **Permission Errors**: Check System Preferences > Security & Privacy
+- **Script Failures**: Test scripts directly in Script Editor.app
+- **Communication Issues**: Check stdio streams aren't being redirected
+
+## Resources
+
+- [AppleScript Language Guide](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptLangGuide/introduction/ASLR_intro.html)
+- [MCP Protocol Documentation](https://modelcontextprotocol.io)
+- [Issue Tracker](https://github.com/joshrutkowski/applescript-mcp/issues)
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details
