@@ -12,6 +12,13 @@ This server provides a standardized interface for AI applications to control sys
 - ⚙️ System controls (volume, dark mode, apps)
 - 📟 iTerm terminal integration
 
+### Planned Features
+- 📬 Mail (list emails, save attachments, summarize, send)
+- 🧭 Safari (open in Safari, save page content, get selected page/tab)
+- 💬 Messages (send, get, list)
+- ✅ Reminders (create, get)
+- 🗒️ Notes (create, get, list)
+
 ## Prerequisites
 
 - macOS 10.15 or later
