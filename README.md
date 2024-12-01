@@ -46,6 +46,10 @@ This is a TypeScript-based MCP server that implements interaction with macOS via
 - `quit_app` - Quit an application
 - `toggle_dark_mode` - Toggle Dark Mode
 
+### iTerm
+- `paste_clipboard` - Paste clipboard content into iTerm
+- `run` - Run a command in iTerm
+
 ## Development
 
 Install dependencies:
