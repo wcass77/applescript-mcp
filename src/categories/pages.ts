@@ -28,6 +28,7 @@ export const pagesCategory: ScriptCategory = {
             set newDoc to make new document
             
             set the body text of newDoc to "${args.content.replace(/"/g, '\\"')}"
+            activate
             return "Document created successfully with plain text content"
           end tell
         on error errMsg
