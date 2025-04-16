@@ -13,6 +13,7 @@ This server provides a standardized interface for AI applications to control sys
 - 🔔 System notifications
 - ⚙️ System controls (volume, dark mode, apps)
 - 📟 iTerm terminal integration
+- 📬 Mail (create new email)
 - 🔄 Shortcuts automation
 
 ### Planned Features
@@ -82,6 +83,7 @@ This server provides a standardized interface for AI applications to control sys
 | Command        | Description    | Parameters                 |
 | -------------- | -------------- | -------------------------- |
 | `run_shortcut` | Run a shortcut | `name`, `input` (optional) |
+
 
 ## Development
 

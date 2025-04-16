@@ -5,6 +5,7 @@ import { finderCategory } from "./categories/finder.js";
 import { clipboardCategory } from "./categories/clipboard.js";
 import { notificationsCategory } from "./categories/notifications.js";
 import { itermCategory } from "./categories/iterm.js";
+import { mailCategory } from "./categories/mail.js";
 import { pagesCategory } from "./categories/pages.js";
 import { shortcutsCategory } from "./categories/shortcuts.js";
 
@@ -21,6 +22,7 @@ server.addCategory(finderCategory);
 server.addCategory(clipboardCategory);
 server.addCategory(notificationsCategory);
 server.addCategory(itermCategory);
+server.addCategory(mailCategory);
 server.addCategory(pagesCategory);
 server.addCategory(shortcutsCategory);
 
