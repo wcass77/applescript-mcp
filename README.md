@@ -3,6 +3,8 @@
 A Model Context Protocol server that enables LLM applications to interact with macOS through AppleScript.
 This server provides a standardized interface for AI applications to control system functions, manage files, handle notifications, and more.
 
+<a href="https://glama.ai/mcp/servers/0t5gydjcqw"><img width="380" height="200" src="https://glama.ai/mcp/servers/0t5gydjcqw/badge" alt="applescript-mcp MCP server" /></a>
+
 ## Features
 
 - 🗓️ Calendar management (events, reminders)
@@ -11,8 +13,10 @@ This server provides a standardized interface for AI applications to control sys
 - 🔔 System notifications
 - ⚙️ System controls (volume, dark mode, apps)
 - 📟 iTerm terminal integration
+- 🔄 Shortcuts automation
 
 ### Planned Features
+
 - 📬 Mail (list emails, save attachments, summarize, send)
 - 🧭 Safari (open in Safari, save page content, get selected page/tab)
 - 💬 Messages (send, get, list)
@@ -27,49 +31,62 @@ This server provides a standardized interface for AI applications to control sys
 ## Available Categories
 
 ### Calendar
-| Command | Description | Parameters |
-|---------|-------------|------------|
-| `add` | Create calendar event | `title`, `startDate`, `endDate` |
-| `list` | List today's events | None |
+
+| Command | Description           | Parameters                      |
+| ------- | --------------------- | ------------------------------- |
+| `add`   | Create calendar event | `title`, `startDate`, `endDate` |
+| `list`  | List today's events   | None                            |
 
 ### Clipboard
-| Command | Description | Parameters |
-|---------|-------------|------------|
-| `set_clipboard` | Copy to clipboard | `content` |
-| `get_clipboard` | Get clipboard contents | None |
-| `clear_clipboard` | Clear clipboard | None |
+
+| Command           | Description            | Parameters |
+| ----------------- | ---------------------- | ---------- |
+| `set_clipboard`   | Copy to clipboard      | `content`  |
+| `get_clipboard`   | Get clipboard contents | None       |
+| `clear_clipboard` | Clear clipboard        | None       |
 
 ### Finder
-| Command | Description | Parameters |
-|---------|-------------|------------|
-| `get_selected_files` | Get selected files | None |
-| `search_files` | Search for files | `query`, `location` (optional) |
-| `quick_look` | Preview file | `path` |
+
+| Command              | Description        | Parameters                     |
+| -------------------- | ------------------ | ------------------------------ |
+| `get_selected_files` | Get selected files | None                           |
+| `search_files`       | Search for files   | `query`, `location` (optional) |
+| `quick_look`         | Preview file       | `path`                         |
 
 ### Notifications
-| Command | Description | Parameters |
-|---------|-------------|------------|
-| `send_notification` | Show notification | `title`, `message`, `sound` (optional) |
-| `toggle_do_not_disturb` | Toggle DND mode | None |
+
+| Command                 | Description       | Parameters                             |
+| ----------------------- | ----------------- | -------------------------------------- |
+| `send_notification`     | Show notification | `title`, `message`, `sound` (optional) |
+| `toggle_do_not_disturb` | Toggle DND mode   | None                                   |
 
 ### System
-| Command | Description | Parameters |
-|---------|-------------|------------|
-| `volume` | Set system volume | `level` (0-100) |
-| `get_frontmost_app` | Get active app | None |
-| `launch_app` | Open application | `name` |
-| `quit_app` | Close application | `name`, `force` (optional) |
-| `toggle_dark_mode` | Toggle dark mode | None |
+
+| Command             | Description       | Parameters                 |
+| ------------------- | ----------------- | -------------------------- |
+| `volume`            | Set system volume | `level` (0-100)            |
+| `get_frontmost_app` | Get active app    | None                       |
+| `launch_app`        | Open application  | `name`                     |
+| `quit_app`          | Close application | `name`, `force` (optional) |
+| `toggle_dark_mode`  | Toggle dark mode  | None                       |
 
 ### iTerm
-| Command | Description | Parameters |
-|---------|-------------|------------|
-| `paste_clipboard` | Paste to iTerm | None |
-| `run` | Execute command | `command`, `newWindow` (optional) |
+
+| Command           | Description     | Parameters                        |
+| ----------------- | --------------- | --------------------------------- |
+| `paste_clipboard` | Paste to iTerm  | None                              |
+| `run`             | Execute command | `command`, `newWindow` (optional) |
+
+### Shortcuts
+
+| Command        | Description    | Parameters                 |
+| -------------- | -------------- | -------------------------- |
+| `run_shortcut` | Run a shortcut | `name`, `input` (optional) |
 
 ## Development
 
 ### Setup
+
 ```bash
 # Install dependencies
 npm install
@@ -85,7 +102,9 @@ npx @modelcontextprotocol/inspector node path/to/server/index.js args...
 ### Adding New Functionality
 
 #### 1. Create Category File
+
 Create `src/categories/newcategory.ts`:
+
 ```typescript
 import { ScriptCategory } from "../types/index.js";
 
@@ -94,11 +113,12 @@ export const newCategory: ScriptCategory = {
   description: "Category description",
   scripts: [
     // Scripts will go here
-  ]
+  ],
 };
 ```
 
 #### 2. Add Scripts
+
 ```typescript
 {
   name: "script_name",
@@ -122,7 +142,9 @@ export const newCategory: ScriptCategory = {
 ```
 
 #### 3. Register Category
+
 Update `src/index.ts`:
+
 ```typescript
 import { newCategory } from "./categories/newcategory.js";
 // ...
@@ -132,6 +154,7 @@ server.addCategory(newCategory);
 ## Debugging
 
 ### Using MCP Inspector
+
 The MCP Inspector provides a web interface for testing and debugging your server:
 
 ```bash
@@ -139,12 +162,15 @@ npm run inspector
 ```
 
 ### Logging
+
 Enable debug logging by setting the environment variable:
+
 ```bash
 DEBUG=applescript-mcp* npm start
 ```
 
 ### Common Issues
+
 - **Permission Errors**: Check System Preferences > Security & Privacy
 - **Script Failures**: Test scripts directly in Script Editor.app
 - **Communication Issues**: Check stdio streams aren't being redirected
