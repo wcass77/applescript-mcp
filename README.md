@@ -13,12 +13,11 @@ This server provides a standardized interface for AI applications to control sys
 - 🔔 System notifications
 - ⚙️ System controls (volume, dark mode, apps)
 - 📟 iTerm terminal integration
-- 📬 Mail (create new email)
+- 📬 Mail (create new email, list emails, get email)
 - 🔄 Shortcuts automation
 
 ### Planned Features
 
-- 📬 Mail (list emails, save attachments, summarize, send)
 - 🧭 Safari (open in Safari, save page content, get selected page/tab)
 - 💬 Messages (send, get, list)
 - ✅ Reminders (create, get)
@@ -84,6 +83,13 @@ This server provides a standardized interface for AI applications to control sys
 | -------------- | -------------- | -------------------------- |
 | `run_shortcut` | Run a shortcut | `name`, `input` (optional) |
 
+### Mail
+
+| Command       | Description                      | Parameters                                                |
+| ------------- | -------------------------------- | --------------------------------------------------------- |
+| `create_email`| Create a new email in Mail.app   | `recipient`, `subject`, `body`                            |
+| `list_emails` | List emails from a mailbox       | `mailbox` (optional), `count` (optional), `unreadOnly` (optional) |
+| `get_email`   | Get a specific email by search   | `subject` (optional), `sender` (optional), `dateReceived` (optional), `mailbox` (optional), `account` (optional), `unreadOnly` (optional), `includeBody` (optional) |
 
 ## Development
 
@@ -169,6 +175,22 @@ Enable debug logging by setting the environment variable:
 
 ```bash
 DEBUG=applescript-mcp* npm start
+```
+
+### Example configuration
+After running `npm run build` add the following to your `mcp.json` file:
+
+```json
+{
+  "mcpServers": {
+    "applescript-mcp-server": {
+      "command": "node",
+      "args": ["/path/to/applescript-mcp/dist/index.js"]
+    }
+  }
+}
+
+
 ```
 
 ### Common Issues
