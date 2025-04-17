@@ -15,11 +15,11 @@ This server provides a standardized interface for AI applications to control sys
 - 📟 iTerm terminal integration
 - 📬 Mail (create new email, list emails, get email)
 - 🔄 Shortcuts automation
+- 💬 Messages (list chats, get messages, search messages, send a message)
 
 ### Planned Features
 
 - 🧭 Safari (open in Safari, save page content, get selected page/tab)
-- 💬 Messages (send, get, list)
 - ✅ Reminders (create, get)
 - 🗒️ Notes (create, get, list)
 
@@ -90,6 +90,15 @@ This server provides a standardized interface for AI applications to control sys
 | `create_email`| Create a new email in Mail.app   | `recipient`, `subject`, `body`                            |
 | `list_emails` | List emails from a mailbox       | `mailbox` (optional), `count` (optional), `unreadOnly` (optional) |
 | `get_email`   | Get a specific email by search   | `subject` (optional), `sender` (optional), `dateReceived` (optional), `mailbox` (optional), `account` (optional), `unreadOnly` (optional), `includeBody` (optional) |
+
+### Messages
+
+| Command           | Description                                  | Parameters                                                |
+| ----------------- | -------------------------------------------- | --------------------------------------------------------- |
+| `list_chats`      | List available iMessage and SMS chats        | `includeParticipantDetails` (optional)                    |
+| `get_messages`    | Get messages from the Messages app           | `limit` (optional, default: 100)                          |
+| `search_messages` | Search for messages containing specific text | `searchText`, `sender` (optional), `chatId` (optional), `limit` (optional, default: 50), `daysBack` (optional, default: 30) |
+| `compose_message` | Open Messages app with pre-filled message or auto-send   | `recipient` (required), `body` (optional), `auto` (optional, default: false) |
 
 ## Development
 

@@ -8,10 +8,11 @@ import { itermCategory } from "./categories/iterm.js";
 import { mailCategory } from "./categories/mail.js";
 import { pagesCategory } from "./categories/pages.js";
 import { shortcutsCategory } from "./categories/shortcuts.js";
+import { messagesCategory } from "./categories/messages.js";
 
 const server = new AppleScriptFramework({
   name: "applescript-server",
-  version: "1.0.0",
+  version: "1.0.3",
   debug: true,
 });
 
@@ -25,6 +26,7 @@ server.addCategory(itermCategory);
 server.addCategory(mailCategory);
 server.addCategory(pagesCategory);
 server.addCategory(shortcutsCategory);
+server.addCategory(messagesCategory);
 
 // Start the server
 server.run().catch(console.error);
