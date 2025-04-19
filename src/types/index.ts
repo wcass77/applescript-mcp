@@ -45,6 +45,20 @@ export interface ScriptCategory {
   scripts: ScriptDefinition[];
 }
 
+/**
+ * Standard log levels for the framework's logging system.
+ * Follows the RFC 5424 syslog severity levels.
+ */
+export type LogLevel = 
+  | "emergency" // System is unusable
+  | "alert"     // Action must be taken immediately
+  | "critical"  // Critical conditions
+  | "error"     // Error conditions
+  | "warning"   // Warning conditions
+  | "notice"    // Normal but significant condition
+  | "info"      // Informational messages
+  | "debug";    // Debug-level messages
+
 export interface FrameworkOptions {
   /**
    * Optional name of the framework.
