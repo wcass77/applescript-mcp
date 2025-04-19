@@ -16,7 +16,7 @@ This server provides a standardized interface for AI applications to control sys
 - 📬 Mail (create new email, list emails, get email)
 - 🔄 Shortcuts automation
 - 💬 Messages (list chats, get messages, search messages, send a message)
-- 🗒️ Notes (create formatted notes, list notes)
+- 🗒️ Notes (create formatted notes, list notes, search notes)
 - 📄 Pages (create documents)
 
 ### Planned Features
@@ -206,7 +206,7 @@ Find the email from sarah@example.com about "Project Update"
 
 | Command           | Description                                  | Parameters                                                |
 | ----------------- | -------------------------------------------- | --------------------------------------------------------- |
-| `list_chats`      | List available iMessage and SMS chats        | `includeParticipantDetails` (optional)                    |
+| `list_chats`      | List available iMessage and SMS chats        | `includeParticipantDetails` (optional, default: false)    |
 | `get_messages`    | Get messages from the Messages app           | `limit` (optional, default: 100)                          |
 | `search_messages` | Search for messages containing specific text | `searchText`, `sender` (optional), `chatId` (optional), `limit` (optional, default: 50), `daysBack` (optional, default: 30) |
 | `compose_message` | Open Messages app with pre-filled message or auto-send   | `recipient` (required), `body` (optional), `auto` (optional, default: false) |
@@ -240,8 +240,8 @@ Send a message to 555-123-4567 saying "I'll be there in 10 minutes"
 #### Examples
 
 ```
-// Create a new note
-Create a note titled "Meeting Minutes" with content "# Discussion Points\n- Project timeline\n- Budget review\n- Next steps"
+// Create a new note with markdown formatting
+Create a note titled "Meeting Minutes" with content "# Discussion Points\n- Project timeline\n- Budget review\n- Next steps" and format headings and lists
 
 // Create a note with HTML
 Create a note titled "Formatted Report" with HTML content "<h1>Quarterly Report</h1><p>Sales increased by <strong>15%</strong></p>"
@@ -268,6 +268,43 @@ Find notes containing "recipe" in my "Cooking" folder
 // Create a new Pages document
 Create a Pages document with the content "Project Proposal\n\nThis document outlines the scope and timeline for the upcoming project."
 ```
+
+## Architecture
+
+The applescript-mcp server is built using TypeScript and follows a modular architecture:
+
+### Core Components
+
+1. **AppleScriptFramework** (`framework.ts`): The main server class that:
+   - Manages MCP protocol communication
+   - Handles tool registration and execution
+   - Provides logging functionality
+   - Executes AppleScript commands
+
+2. **Categories** (`src/categories/*.ts`): Modular script collections organized by functionality:
+   - Each category contains related scripts (e.g., calendar, system, notes)
+   - Categories are registered with the framework in `index.ts`
+
+3. **Types** (`src/types/index.ts`): TypeScript interfaces defining:
+   - `ScriptDefinition`: Structure for individual scripts
+   - `ScriptCategory`: Collection of related scripts
+   - `LogLevel`: Standard logging levels
+   - `FrameworkOptions`: Configuration options
+
+### Execution Flow
+
+1. Client sends a tool request via MCP protocol
+2. Server identifies the appropriate category and script
+3. Script content is generated (static or dynamically via function)
+4. AppleScript is executed via macOS `osascript` command
+5. Results are returned to the client
+
+### Logging System
+
+The framework includes a comprehensive logging system that:
+- Logs to both stderr and MCP logging protocol
+- Supports multiple severity levels (debug, info, warning, error, etc.)
+- Provides detailed execution information for troubleshooting
 
 ## Development
 
@@ -337,6 +374,41 @@ import { newCategory } from "./categories/newcategory.js";
 server.addCategory(newCategory);
 ```
 
+### Advanced Script Development
+
+For more complex scripts, you can:
+
+1. **Use dynamic script generation**:
+   ```typescript
+   script: (args) => {
+     // Process arguments and build script dynamically
+     let scriptContent = `tell application "App"\n`;
+     
+     if (args.condition) {
+       scriptContent += `  // Conditional logic\n`;
+     }
+     
+     scriptContent += `end tell`;
+     return scriptContent;
+   }
+   ```
+
+2. **Process complex data**:
+   ```typescript
+   // Example from Notes category
+   function generateNoteHtml(args: any): string {
+     // Process markdown-like syntax into HTML
+     let processedContent = content;
+     
+     if (format.headings) {
+       processedContent = processedContent.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+       // ...
+     }
+     
+     return processedContent;
+   }
+   ```
+
 ## Debugging
 
 ### Using MCP Inspector
@@ -367,15 +439,14 @@ After running `npm run build` add the following to your `mcp.json` file:
     }
   }
 }
-
-
 ```
 
 ### Common Issues
 
-- **Permission Errors**: Check System Preferences > Security & Privacy
-- **Script Failures**: Test scripts directly in Script Editor.app
+- **Permission Errors**: Check System Preferences > Security & Privacy > Privacy > Automation
+- **Script Failures**: Test scripts directly in Script Editor.app before integration
 - **Communication Issues**: Check stdio streams aren't being redirected
+- **Database Access**: Some features (like Messages) require Full Disk Access permission
 
 ## Resources
 
