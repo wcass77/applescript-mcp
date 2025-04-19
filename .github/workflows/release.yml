@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*' # Trigger on version tags (v1.0.0, v1.2.3, etc.)
 
+permissions:
+  contents: write # This is required for creating releases and uploading assets
+
 jobs:
   build:
     runs-on: macos-latest
@@ -30,23 +33,6 @@ jobs:
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
         
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-          body: |
-            Release of applescript-mcp version ${{ steps.get_version.outputs.VERSION }}
-            
-            ## Changes
-            
-            <!-- Add your release notes here -->
-            
       - name: Create package archive
         run: |
           mkdir -p dist-package
@@ -55,15 +41,20 @@ jobs:
           npm pack
           mv *.tgz ../applescript-mcp-${{ steps.get_version.outputs.VERSION }}.tgz
           
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./applescript-mcp-${{ steps.get_version.outputs.VERSION }}.tgz
-          asset_name: applescript-mcp-${{ steps.get_version.outputs.VERSION }}.tgz
-          asset_content_type: application/gzip
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          body: |
+            Release of applescript-mcp version ${{ steps.get_version.outputs.VERSION }}
+            
+            ## Changes
+            
+            <!-- Add your release notes here -->
+          files: |
+            ./applescript-mcp-${{ steps.get_version.outputs.VERSION }}.tgz
           
       # Uncomment the following step if you want to publish to npm
       # - name: Publish to npm
