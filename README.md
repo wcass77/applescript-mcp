@@ -55,6 +55,8 @@ This server provides a standardized interface for AI applications to control sys
 
 ### Notifications
 
+> Note: Sending notification requires that you enable notifications in System Settings > Notifications > Script Editor.
+
 | Command                 | Description       | Parameters                             |
 | ----------------------- | ----------------- | -------------------------------------- |
 | `send_notification`     | Show notification | `title`, `message`, `sound` (optional) |
