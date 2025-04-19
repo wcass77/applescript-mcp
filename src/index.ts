@@ -13,7 +13,7 @@ import { notesCategory } from "./categories/notes.js";
 
 const server = new AppleScriptFramework({
   name: "applescript-server",
-  version: "1.0.3",
+  version: "1.0.4",
   debug: false,
 });
 
