@@ -81,9 +81,10 @@ This server provides a standardized interface for AI applications to control sys
 
 ### Shortcuts
 
-| Command        | Description    | Parameters                 |
-| -------------- | -------------- | -------------------------- |
-| `run_shortcut` | Run a shortcut | `name`, `input` (optional) |
+| Command          | Description                                | Parameters                                           |
+| ---------------- | ------------------------------------------ | ---------------------------------------------------- |
+| `run_shortcut`   | Run a shortcut                             | `name`, `input` (optional)                           |
+| `list_shortcuts` | List all available shortcuts               | `limit` (optional)                                   |
 
 ### Mail
 
