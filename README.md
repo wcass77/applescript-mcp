@@ -17,6 +17,7 @@ This server provides a standardized interface for AI applications to control sys
 - 🔄 Shortcuts automation
 - 💬 Messages (list chats, get messages, search messages, send a message)
 - 🗒️ Notes (create formatted notes, list notes)
+- 📄 Pages (create documents)
 
 ### Planned Features
 
@@ -32,10 +33,10 @@ This server provides a standardized interface for AI applications to control sys
 
 ### Calendar
 
-| Command | Description           | Parameters                      |
-| ------- | --------------------- | ------------------------------- |
-| `add`   | Create calendar event | `title`, `startDate`, `endDate` |
-| `list`  | List today's events   | None                            |
+| Command | Description           | Parameters                                          |
+| ------- | --------------------- | --------------------------------------------------- |
+| `add`   | Create calendar event | `title`, `startDate`, `endDate`, `calendar` (optional) |
+| `list`  | List today's events   | None                                                |
 
 #### Examples
 
@@ -253,6 +254,19 @@ Show me my note titled "Shopping List"
 
 // Search notes
 Find notes containing "recipe" in my "Cooking" folder
+```
+
+### Pages
+
+| Command            | Description                                  | Parameters                                                |
+| ----------------- | -------------------------------------------- | --------------------------------------------------------- |
+| `create_document` | Create a new Pages document with plain text  | `content`                                                 |
+
+#### Examples
+
+```
+// Create a new Pages document
+Create a Pages document with the content "Project Proposal\n\nThis document outlines the scope and timeline for the upcoming project."
 ```
 
 ## Development
