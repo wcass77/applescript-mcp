@@ -16,6 +16,8 @@ import {
 
 const execAsync = promisify(exec);
 
+
+
 export class AppleScriptFramework {
   private server: Server;
   private categories: ScriptCategory[] = [];
@@ -58,6 +60,14 @@ export class AppleScriptFramework {
   addCategory(category: ScriptCategory): void {
     this.categories.push(category);
   }
+
+  // log(level: String, message: String): void {
+  //   // "error" | "debug" | "info" | "notice" | "warning" | "critical" | "alert" | "emergency"
+  //   this.server.sendLoggingMessage({
+  //     level: level,
+  //     data: "Server started successfully",
+  //   });
+  // }
 
   /**
    * Executes an AppleScript and returns the result.
