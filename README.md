@@ -37,6 +37,16 @@ This server provides a standardized interface for AI applications to control sys
 | `add`   | Create calendar event | `title`, `startDate`, `endDate` |
 | `list`  | List today's events   | None                            |
 
+#### Examples
+
+```
+// Create a new calendar event
+Create a calendar event titled "Team Meeting" starting tomorrow at 2pm for 1 hour
+
+// List today's events
+What events do I have scheduled for today?
+```
+
 ### Clipboard
 
 | Command           | Description            | Parameters |
@@ -44,6 +54,19 @@ This server provides a standardized interface for AI applications to control sys
 | `set_clipboard`   | Copy to clipboard      | `content`  |
 | `get_clipboard`   | Get clipboard contents | None       |
 | `clear_clipboard` | Clear clipboard        | None       |
+
+#### Examples
+
+```
+// Copy text to clipboard
+Copy "Remember to buy groceries" to my clipboard
+
+// Get clipboard contents
+What's currently in my clipboard?
+
+// Clear clipboard
+Clear my clipboard
+```
 
 ### Finder
 
@@ -53,6 +76,19 @@ This server provides a standardized interface for AI applications to control sys
 | `search_files`       | Search for files   | `query`, `location` (optional) |
 | `quick_look`         | Preview file       | `path`                         |
 
+#### Examples
+
+```
+// Get selected files in Finder
+What files do I currently have selected in Finder?
+
+// Search for files
+Find all PDF files in my Documents folder
+
+// Preview a file
+Show me a preview of ~/Documents/report.pdf
+```
+
 ### Notifications
 
 > Note: Sending notification requires that you enable notifications in System Settings > Notifications > Script Editor.
@@ -61,6 +97,16 @@ This server provides a standardized interface for AI applications to control sys
 | ----------------------- | ----------------- | -------------------------------------- |
 | `send_notification`     | Show notification | `title`, `message`, `sound` (optional) |
 | `toggle_do_not_disturb` | Toggle DND mode   | None                                   |
+
+#### Examples
+
+```
+// Send a notification
+Send me a notification with the title "Reminder" and message "Time to take a break"
+
+// Toggle Do Not Disturb
+Turn on Do Not Disturb mode
+```
 
 ### System
 
@@ -72,12 +118,44 @@ This server provides a standardized interface for AI applications to control sys
 | `quit_app`          | Close application | `name`, `force` (optional) |
 | `toggle_dark_mode`  | Toggle dark mode  | None                       |
 
+#### Examples
+
+```
+// Set system volume
+Set my Mac's volume to 50%
+
+// Get active application
+What app am I currently using?
+
+// Launch an application
+Open Safari
+
+// Quit an application
+Close Spotify
+
+// Toggle dark mode
+Switch to dark mode
+```
+
 ### iTerm
 
 | Command           | Description     | Parameters                        |
 | ----------------- | --------------- | --------------------------------- |
 | `paste_clipboard` | Paste to iTerm  | None                              |
 | `run`             | Execute command | `command`, `newWindow` (optional) |
+
+#### Examples
+
+```
+// Paste clipboard to iTerm
+Paste my clipboard contents into iTerm
+
+// Run a command in iTerm
+Run "ls -la" in iTerm
+
+// Run a command in a new iTerm window
+Run "top" in a new iTerm window
+```
 
 ### Shortcuts
 
@@ -86,6 +164,22 @@ This server provides a standardized interface for AI applications to control sys
 | `run_shortcut`   | Run a shortcut                             | `name`, `input` (optional)                           |
 | `list_shortcuts` | List all available shortcuts               | `limit` (optional)                                   |
 
+#### Examples
+
+```
+// List available shortcuts
+List all my available shortcuts
+
+// List with limit
+Show me my top 5 shortcuts
+
+// Run a shortcut
+Run my "Daily Note in Bear" shortcut
+
+// Run a shortcut with input
+Run my "Add to-do" shortcut with input "Buy groceries"
+```
+
 ### Mail
 
 | Command       | Description                      | Parameters                                                |
@@ -93,6 +187,19 @@ This server provides a standardized interface for AI applications to control sys
 | `create_email`| Create a new email in Mail.app   | `recipient`, `subject`, `body`                            |
 | `list_emails` | List emails from a mailbox       | `mailbox` (optional), `count` (optional), `unreadOnly` (optional) |
 | `get_email`   | Get a specific email by search   | `subject` (optional), `sender` (optional), `dateReceived` (optional), `mailbox` (optional), `account` (optional), `unreadOnly` (optional), `includeBody` (optional) |
+
+#### Examples
+
+```
+// Create a new email
+Compose an email to john@example.com with subject "Meeting Tomorrow" and body "Hi John, Can we meet tomorrow at 2pm?"
+
+// List emails
+Show me my 10 most recent unread emails
+
+// Get a specific email
+Find the email from sarah@example.com about "Project Update"
+```
 
 ### Messages
 
@@ -103,6 +210,22 @@ This server provides a standardized interface for AI applications to control sys
 | `search_messages` | Search for messages containing specific text | `searchText`, `sender` (optional), `chatId` (optional), `limit` (optional, default: 50), `daysBack` (optional, default: 30) |
 | `compose_message` | Open Messages app with pre-filled message or auto-send   | `recipient` (required), `body` (optional), `auto` (optional, default: false) |
 
+#### Examples
+
+```
+// List available chats
+Show me my recent message conversations
+
+// Get recent messages
+Show me my last 20 messages
+
+// Search messages
+Find messages containing "dinner plans" from John in the last week
+
+// Compose a message
+Send a message to 555-123-4567 saying "I'll be there in 10 minutes"
+```
+
 ### Notes
 
 | Command           | Description                                  | Parameters                                                |
@@ -112,6 +235,25 @@ This server provides a standardized interface for AI applications to control sys
 | `list`            | List notes, optionally from a specific folder| `folder` (optional)                                       |
 | `get`             | Get a specific note by title                 | `title`, `folder` (optional)                              |
 | `search`          | Search for notes containing specific text    | `query`, `folder` (optional), `limit` (optional, default: 5), `includeBody` (optional, default: true) |
+
+#### Examples
+
+```
+// Create a new note
+Create a note titled "Meeting Minutes" with content "# Discussion Points\n- Project timeline\n- Budget review\n- Next steps"
+
+// Create a note with HTML
+Create a note titled "Formatted Report" with HTML content "<h1>Quarterly Report</h1><p>Sales increased by <strong>15%</strong></p>"
+
+// List notes
+Show me all my notes in the "Work" folder
+
+// Get a specific note
+Show me my note titled "Shopping List"
+
+// Search notes
+Find notes containing "recipe" in my "Cooking" folder
+```
 
 ## Development
 
