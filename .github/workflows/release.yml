@@ -6,7 +6,9 @@ on:
       - 'v*' # Trigger on version tags (v1.0.0, v1.2.3, etc.)
 
 permissions:
-  contents: write # This is required for creating releases and uploading assets
+  contents: write 
+  pull-requests: write
+  repository-projects: write
 
 jobs:
   build:
