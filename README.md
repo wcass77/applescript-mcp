@@ -20,6 +20,7 @@ This server provides a standardized interface for AI applications to control sys
 - 💬 Messages (list chats, get messages, search messages, send a message)
 - 🗒️ Notes (create formatted notes, list notes, search notes)
 - 📄 Pages (create documents)
+- ✅ OmniFocus (create tasks, list projects/folders/tasks)
 
 ### Planned Features
 
@@ -269,6 +270,41 @@ Find notes containing "recipe" in my "Cooking" folder
 ```
 // Create a new Pages document
 Create a Pages document with the content "Project Proposal\n\nThis document outlines the scope and timeline for the upcoming project."
+```
+
+### OmniFocus
+
+| Command            | Description                                  | Parameters                                                |
+| ----------------- | -------------------------------------------- | --------------------------------------------------------- |
+| `createTasks`     | Create one or more tasks in OmniFocus        | `taskName` (single), `taskNotes`, `dueDate`, `flagged`, `projectName`, `tagNames` OR `tasks` (array for multiple) |
+| `listItems`       | Get a list of projects, folders, and/or tasks | `itemTypes` (array), `includeCompleted`, `projectFilter`, `tagFilter`, `maxResults`, `folderStatus` |
+
+#### Examples
+
+```
+// Create a single task
+Create a task in OmniFocus called "Review quarterly report" with notes "Focus on sales metrics" due tomorrow
+
+// Create multiple tasks
+Create tasks in OmniFocus: "Buy groceries", "Call dentist", and "Review budget" with the budget task flagged
+
+// List all active projects
+Show me all my active OmniFocus projects
+
+// List tasks from specific project
+Show me tasks from the "Work" project in OmniFocus
+
+// List folders and projects including completed ones
+Show me all OmniFocus folders and projects, including completed ones
+
+// List only visible folders (default)
+Show me active OmniFocus folders
+
+// List all folders including hidden ones
+Show me all OmniFocus folders regardless of visibility
+
+// List only hidden folders
+Show me hidden OmniFocus folders
 ```
 
 ## Architecture
