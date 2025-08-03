@@ -10,6 +10,7 @@ import { pagesCategory } from "./categories/pages.js";
 import { shortcutsCategory } from "./categories/shortcuts.js";
 import { messagesCategory } from "./categories/messages.js";
 import { notesCategory } from "./categories/notes.js";
+import { omnifocusCategory } from "./categories/omnifocus.js";
 
 const server = new AppleScriptFramework({
     name: "applescript-server",
@@ -24,6 +25,7 @@ console.error(`[INFO] Starting AppleScript MCP server - PID: ${process.pid}`);
 console.error("[INFO] Registering categories...");
 server.addCategory(systemCategory);
 server.addCategory(calendarCategory);
+server.addCategory(omnifocusCategory);
 //server.addCategory(finderCategory);
 //server.addCategory(clipboardCategory);
 //server.addCategory(notificationsCategory);
@@ -33,7 +35,7 @@ server.addCategory(calendarCategory);
 //server.addCategory(shortcutsCategory);
 //server.addCategory(messagesCategory);
 //server.addCategory(notesCategory);
-console.error(`[INFO] Registered ${2} categories successfully`);
+console.error(`[INFO] Registered ${3} categories successfully`);
 
 // Start the server
 console.error("[INFO] Starting server...");
