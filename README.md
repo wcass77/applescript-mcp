@@ -277,7 +277,20 @@ Create a Pages document with the content "Project Proposal\n\nThis document outl
 | Command            | Description                                  | Parameters                                                |
 | ----------------- | -------------------------------------------- | --------------------------------------------------------- |
 | `createTasks`     | Create one or more tasks in OmniFocus        | `taskName` (single), `taskNotes`, `dueDate`, `flagged`, `projectName`, `tagNames` OR `tasks` (array for multiple) |
-| `listItems`       | Get a list of projects, folders, and/or tasks | `itemTypes` (array), `includeCompleted`, `projectFilter`, `tagFilter`, `maxResults`, `folderStatus` |
+| `listItems`       | Get a list of projects, folders, and/or tasks | `itemTypes` (array), `includeCompleted`, `projectFilter`, `tagFilter`, `maxResults`, `folderStatus`, `hierarchical`, `maxDepth`, `parentId` |
+
+#### Hierarchical Listing Parameters
+
+When `hierarchical` is set to `true`, the following additional parameters are available:
+
+- **`maxDepth`** (number, default: 10): Maximum depth to traverse in hierarchical mode
+  - `0` = current level only
+  - `1` = one level down
+  - `2` = two levels down, etc.
+- **`parentId`** (string, optional): ID of specific folder or project to start traversal from
+  - If not provided, starts from top-level items
+  - Works with both folder IDs and project IDs
+  - Returns error if invalid ID is provided
 
 #### Examples
 
@@ -288,7 +301,7 @@ Create a task in OmniFocus called "Review quarterly report" with notes "Focus on
 // Create multiple tasks
 Create tasks in OmniFocus: "Buy groceries", "Call dentist", and "Review budget" with the budget task flagged
 
-// List all active projects
+// List all active projects (flat view)
 Show me all my active OmniFocus projects
 
 // List tasks from specific project
@@ -305,6 +318,18 @@ Show me all OmniFocus folders regardless of visibility
 
 // List only hidden folders
 Show me hidden OmniFocus folders
+
+// Get hierarchical view with limited depth
+Show me my OmniFocus structure in hierarchical format, but only 2 levels deep
+
+// Drill down into specific folder
+Show me the contents of the "Work" folder (ID: aHmC0aptzEb) in OmniFocus with full hierarchy
+
+// Show only immediate children of a project
+Show me just the tasks directly under the "Quarterly Planning" project (ID: xyz123) without subtasks
+
+// Get complete hierarchical structure
+Show me my entire OmniFocus structure in hierarchical JSON format
 ```
 
 ## Architecture

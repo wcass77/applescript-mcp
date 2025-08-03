@@ -20,8 +20,8 @@ describe('OmniFocus Category', () => {
       // Should contain the basic task creation
       assert(script.includes('make new inbox task with properties {name:"Test Task", flagged:false}'));
       
-      // Should return task summary with count and IDs
-      assert(script.includes('return "Created " & (count of taskIds) & " tasks with IDs: " & result'));
+      // Should return task summary with count and IDs (new format)
+      assert(script.includes('return "Created " & (count of taskIds) & " tasks with IDs: " & resultString'));
       
       // Should NOT contain undefined values
       assert(!script.includes('undefined'));
@@ -54,8 +54,9 @@ describe('OmniFocus Category', () => {
       // Should contain due date
       assert(script.includes('set due date of theTask to date "January 15, 2024"'));
       
-      // Should contain project assignment
-      assert(script.includes('set theProject to first project whose name is "Work Projects"'));
+      // Should contain project assignment (new direct creation pattern)
+      assert(script.includes('set projectList to flattenedProjects whose name is "Work Projects"'));
+      assert(script.includes('set theTask to make new task at end of tasks of theProject'));
       
       // Should contain tag assignments
       assert(script.includes('set theTag to first tag whose name is "urgent"'));
@@ -118,8 +119,9 @@ describe('OmniFocus Category', () => {
       // Should NOT include due date for empty string
       assert(!script.includes('set due date of theTask'));
       
-      // Should include project assignment
-      assert(script.includes('set theProject to first project whose name is "Valid Project"'));
+      // Should include project assignment (new direct creation pattern)
+      assert(script.includes('set projectList to flattenedProjects whose name is "Valid Project"'));
+      assert(script.includes('set theTask to make new task at end of tasks of theProject'));
       
       // Should include valid tags only
       assert(script.includes('set theTag to first tag whose name is "valid-tag"'));
@@ -216,20 +218,22 @@ describe('OmniFocus Category', () => {
       console.log(`osascript -e '${script.replace(/'/g, "'\"'\"'")}'`);
       console.log('=== End Script ===\n');
 
-      // Should create all three tasks
-      assert(script.includes('-- Create task 1: First Task'));
-      assert(script.includes('-- Create task 2: Second Task'));
-      assert(script.includes('-- Create task 3: Third Task'));
+      // Should create all three tasks (note: comments now include creation location)
+      assert(script.includes('-- Create task 1 in inbox: First Task'));
+      assert(script.includes('-- Create task 2 directly in project by name: Second Task'));
+      assert(script.includes('-- Create task 3 in inbox: Third Task'));
       
       // Should handle different properties for each task
       assert(script.includes('make new inbox task with properties {name:"First Task", flagged:true}'));
-      assert(script.includes('make new inbox task with properties {name:"Second Task", flagged:false}'));
+      // Second task should be created in project, not inbox
+      assert(script.includes('make new task at end of tasks of theProject with properties {name:"Second Task", flagged:false}'));
       assert(script.includes('make new inbox task with properties {name:"Third Task", flagged:false}'));
       
       // Should include task-specific properties
       assert(script.includes('set the note of theTask to "Notes for first task"'));
       assert(script.includes('set due date of theTask to date "January 20, 2024"'));
-      assert(script.includes('set theProject to first project whose name is "Test Project"'));
+      // New project lookup pattern
+      assert(script.includes('set projectList to flattenedProjects whose name is "Test Project"'));
       assert(script.includes('set theTag to first tag whose name is "urgent"'));
       
       // Should collect all task IDs
@@ -237,8 +241,8 @@ describe('OmniFocus Category', () => {
       assert(script.includes('-- Store task ID for task 2'));
       assert(script.includes('-- Store task ID for task 3'));
       
-      // Should return summary
-      assert(script.includes('return "Created " & (count of taskIds) & " tasks with IDs: " & result'));
+      // Should return summary (new format)
+      assert(script.includes('return "Created " & (count of taskIds) & " tasks with IDs: " & resultString'));
     });
 
     it('should handle error when no taskName or tasks provided', () => {
@@ -280,8 +284,8 @@ describe('OmniFocus Category', () => {
       assert(script.includes('tell default document'));
       assert(script.includes('end tell'));
       
-      // Should return results
-      assert(script.includes('return "Found " & (count of resultList) & " items:\n" & resultString'));
+      // Should return results with proper formatting
+      assert(script.includes('return "Found " \u0026 (count of resultList) \u0026 " items:\\n" \u0026 resultString'));
     });
 
     it('should generate script for specific item types', () => {
@@ -524,6 +528,11 @@ describe('OmniFocus Category', () => {
       assert(listItemsScript.schema.properties.folderStatus.enum.includes('active'));
       assert(listItemsScript.schema.properties.folderStatus.enum.includes('hidden'));
       assert(listItemsScript.schema.properties.folderStatus.enum.includes('all'));
+      
+      // Check hierarchical property
+      assert(listItemsScript.schema.properties.hierarchical);
+      assert.equal(listItemsScript.schema.properties.hierarchical.type, 'boolean');
+      assert.equal(listItemsScript.schema.properties.hierarchical.default, false);
     });
 
     it('should have createTasks script with correct schema', () => {
